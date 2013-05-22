@@ -13,32 +13,32 @@ public class ShipMove : MonoBehaviour
 	private Rigidbody rb;
 	
 	private float engine;
-	
-	
+
+	public float inputHorizontal;
+	public float inputVertical;
+	public float inputAcceleration;
+
 	// Use this for initialization
 	void Start () 
 	{
 		trans = transform;
 		rb = rigidbody;
+
+		inputHorizontal = inputVertical = inputAcceleration = 0.0f;
 	}
-	
-	// Update is called once per frame
-	void FixedUpdate () 
+
+	public void FixedUpdate () 
 	{
 		rb.angularDrag = rotationDrag;
 		rb.drag = engineDrag;
+
+		rb.AddTorque(inputHorizontal * trans.up * rotationForce);
+		rb.AddTorque(inputVertical * trans.right * rotationForce);
 		
-		float horizontal = Input.GetAxis("Horizontal");
-		float vertical = -Input.GetAxis("Vertical");
-		float acceleration = Input.GetAxis("Acceleration");
-		
-		rb.AddTorque(horizontal * trans.up * rotationForce);
-		rb.AddTorque(vertical * trans.right * rotationForce);
-		
-		if (acceleration > 0.0f)
+		if (inputAcceleration > 0.0f)
 			engine += engineForce * Time.deltaTime;
 		
-		if (acceleration < 0.0f)
+		if (inputAcceleration < 0.0f)
 			engine -= engineForce * Time.deltaTime;
 		
 		engine = Mathf.Clamp(engine, 0.0f, engineForce);

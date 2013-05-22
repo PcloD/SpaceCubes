@@ -13,24 +13,26 @@ public class ShipFire : MonoBehaviour
 	private Rigidbody rb;
 	
 	// Use this for initialization
-	void Start () 
+	public void Start () 
 	{
 		rb = rigidbody;
 	}
 	
 	// Update is called once per frame
-	void Update () 
+	public void Update () 
 	{
 		nextFireTime -= Time.deltaTime;
-		
-		if ((Input.GetButton("Fire1") || Input.GetAxis("Fire1") > 0)  && nextFireTime <= 0)
+	}
+
+	public void Fire()
+	{
+		if (nextFireTime <= 0) 
 		{
-			GameObject goFire = (GameObject) GameObject.Instantiate(shotPrefab, fireFrom.position, fireFrom.rotation);
-			
+            GameObject goFire = (GameObject)GameObject.Instantiate(shotPrefab, fireFrom.position, fireFrom.rotation);
+
 			goFire.rigidbody.velocity = rb.velocity + fireFrom.forward * shotSpeed;
-			
+
 			nextFireTime = timeBetweenShots;
 		}
-	
 	}
 }
